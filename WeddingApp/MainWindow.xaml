@@ -1,0 +1,47 @@
+﻿<Window x:Class="WeddingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeddingApp"
+        mc:Ignorable="d"
+        Title="Wedding Pictures" Height="350" Width="525">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="wedding.jpg"/>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TreeView Grid.Column="0" ItemsSource="{Binding AppNodes}" Background="Transparent">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children, Mode=TwoWay}">
+                    <StackPanel Orientation="Horizontal">
+                        <!--Image Source="{Binding ImageFile}" Height="16" Width="16"/-->
+                        <TextBlock Text="{Binding Name}" Margin="5,0,0,0" FontSize="16" FontWeight="Bold" FontStyle="Normal" FontFamily="Segoe Script"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Rename" Command="{Binding RenamePictureCommand}"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+        </TreeView>
+        <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Stretch" Width="3" ResizeDirection="Columns"  />
+        <Image Grid.Column="1" Source="{Binding ImageFile, Mode=TwoWay}"/>
+    </Grid>
+</Window>
